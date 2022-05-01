@@ -51,6 +51,90 @@ app.get('/painco/2', async (req, res) => {
     solicitacaoPagador: 'Cobrança dos serviços prestados.'
   };
   
+  
+
+  const cobResponse = await reqGN.post('/v2/cob', dataCob);
+  const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
+
+  res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
+});
+
+app.get('/painco/3', async (req, res) => {
+  const reqGN = await reqGNAlready;
+  const dataCob = {
+    calendario: {
+      expiracao: 3600
+    },
+    valor: {
+      original: '0.30'
+    },
+    chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
+    solicitacaoPagador: 'Cobrança dos serviços prestados.'
+  };
+  
+  
+
+  const cobResponse = await reqGN.post('/v2/cob', dataCob);
+  const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
+
+  res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
+});
+
+app.get('/girassol/1', async (req, res) => {
+  const reqGN = await reqGNAlready;
+  const dataCob = {
+    calendario: {
+      expiracao: 3600
+    },
+    valor: {
+      original: '0.10'
+    },
+    chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
+    solicitacaoPagador: 'Cobrança dos serviços prestados.'
+  };
+  
+  app.get('/girassol/2', async (req, res) => {
+    const reqGN = await reqGNAlready;
+    const dataCob = {
+      calendario: {
+        expiracao: 3600
+      },
+      valor: {
+        original: '0.20'
+      },
+      chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
+      solicitacaoPagador: 'Cobrança dos serviços prestados.'
+    };
+    
+    
+  
+    const cobResponse = await reqGN.post('/v2/cob', dataCob);
+    const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
+  
+    res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
+  });
+
+  app.get('/girassol/3', async (req, res) => {
+    const reqGN = await reqGNAlready;
+    const dataCob = {
+      calendario: {
+        expiracao: 3600
+      },
+      valor: {
+        original: '0.30'
+      },
+      chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
+      solicitacaoPagador: 'Cobrança dos serviços prestados.'
+    };
+    
+    
+  
+    const cobResponse = await reqGN.post('/v2/cob', dataCob);
+    const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
+  
+    res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
+  });
+  
 
   const cobResponse = await reqGN.post('/v2/cob', dataCob);
   const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
@@ -71,6 +155,6 @@ app.post('/webhook(/pix)?', (req, res) => {
   res.send('200');
 });
 
-app.listen(8000, () => {
+app.listen(8000,  () => {
   console.log('running');
 })
