@@ -25,14 +25,14 @@ app.get('/painco/1', async (req, res) => {
       expiracao: 3600
     },
     valor: {
-      original: '0.10'
+      original: '0.01'
     },
     chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
     solicitacaoPagador: 'Cobrança dos serviços prestados.'
   };
   
 
-  const cobResponse = await reqGN.post('/v2/cob', dataCob);
+  const cobResponse = await reqGN.post('/v2/cob/', dataCob);
   const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
 
   res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
@@ -45,7 +45,7 @@ app.get('/painco/2', async (req, res) => {
       expiracao: 3600
     },
     valor: {
-      original: '0.20'
+      original: '0.02'
     },
     chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
     solicitacaoPagador: 'Cobrança dos serviços prestados.'
@@ -66,7 +66,7 @@ app.get('/painco/3', async (req, res) => {
       expiracao: 3600
     },
     valor: {
-      original: '0.30'
+      original: '0.03'
     },
     chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
     solicitacaoPagador: 'Cobrança dos serviços prestados.'
@@ -87,53 +87,54 @@ app.get('/girassol/1', async (req, res) => {
       expiracao: 3600
     },
     valor: {
-      original: '0.10'
+      original: '0.01'
     },
     chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
     solicitacaoPagador: 'Cobrança dos serviços prestados.'
   };
   
-  app.get('/girassol/2', async (req, res) => {
-    const reqGN = await reqGNAlready;
-    const dataCob = {
-      calendario: {
-        expiracao: 3600
-      },
-      valor: {
-        original: '0.20'
-      },
-      chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
-      solicitacaoPagador: 'Cobrança dos serviços prestados.'
-    };
-    
-    
   
-    const cobResponse = await reqGN.post('/v2/cob', dataCob);
-    const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
-  
-    res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
-  });
 
-  app.get('/girassol/3', async (req, res) => {
-    const reqGN = await reqGNAlready;
-    const dataCob = {
-      calendario: {
-        expiracao: 3600
-      },
-      valor: {
-        original: '0.30'
-      },
-      chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
-      solicitacaoPagador: 'Cobrança dos serviços prestados.'
-    };
-    
-    
+  const cobResponse = await reqGN.post('/v2/cob', dataCob);
+  const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
+
+  res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
+});
+
+app.get('/girassol/2', async (req, res) => {
+  const reqGN = await reqGNAlready;
+  const dataCob = {
+    calendario: {
+      expiracao: 3600
+    },
+    valor: {
+      original: '0.02'
+    },
+    chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
+    solicitacaoPagador: 'Cobrança dos serviços prestados.'
+  };
   
-    const cobResponse = await reqGN.post('/v2/cob', dataCob);
-    const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
   
-    res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
-  });
+
+  const cobResponse = await reqGN.post('/v2/cob', dataCob);
+  const qrcodeResponse = await reqGN.get(`/v2/loc/${cobResponse.data.loc.id}/qrcode`);
+
+  res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode })
+});
+
+app.get('/girassol/3', async (req, res) => {
+  const reqGN = await reqGNAlready;
+  const dataCob = {
+    calendario: {
+      expiracao: 3600
+    },
+    valor: {
+      original: '0.03'
+    },
+    chave: '303f5214-c6df-43bb-b28c-346c164dfa5a',
+    solicitacaoPagador: 'Cobrança dos serviços prestados.'
+  };
+  
   
 
   const cobResponse = await reqGN.post('/v2/cob', dataCob);
@@ -145,7 +146,23 @@ app.get('/girassol/1', async (req, res) => {
 app.get('/cobrancas', async(req, res) => {
   const reqGN = await reqGNAlready;
 
-  const cobResponse = await reqGN.get('/v2/cob?inicio=2021-02-15T16:01:35Z&fim=2021-02-22T23:59:00Z');
+  const cobResponse = await reqGN.get('/v2/cob?inicio=2022-05-28T00:00:35Z&fim=2022-05-28T23:59:00Z');
+
+  res.send(cobResponse.data);
+});
+
+app.get('/cobrancas-ativas', async(req, res) => {
+  const reqGN = await reqGNAlready;
+
+  const cobResponse = await reqGN.get('/v2/cob/{txid}/?revisao=1');
+
+  res.send(cobResponse.data);
+});
+
+app.get('/pix', async(req, res) => {
+  const reqGN = await reqGNAlready;
+
+  const cobResponse = await reqGN.get('/v2/pix?inicio=2022-05-08T00:00:00Z&fim=2022-05-08T23:59:59Z');
 
   res.send(cobResponse.data);
 });
@@ -155,6 +172,8 @@ app.post('/webhook(/pix)?', (req, res) => {
   res.send('200');
 });
 
-app.listen(8000,  () => {
-  console.log('running');
+var host = '0.0.0.0'
+var port = 8000;
+app.listen(port, host,()=>{
+  console.log("O IP é " + host + " e a Porta é " + port);
 })
